@@ -36,7 +36,22 @@ module.exports = function({types: t}) {
               let currcomments = comments[i].value.split("~");
               // currcomments[0] is empty
               // currcomments[1] = name/description and is required
+              //CHANGES JP
+              let test = 'dabtest';
+              
+              
               let description = currcomments[1].replace(/\r\n/, "\n").split(/\n/)[0].replace(/^[ ]+|[ ]+$/g, '');
+               //CHANGES JP
+               if (description[0] === 'x' && description[1] === ':') {
+                    description = description.slice(2).replace(/^[ ]+|[ ]+$/g, '');
+                    test = 'dabtest.skip';
+                }; 
+               if (description[0] === 'o' && description[1] === ':') {
+                    description = description.slice(2).replace(/^[ ]+|[ ]+$/g, '');
+                    test = 'dabtest.only';
+                };
+              //CHANGES JP
+              let endTest = ''; 
               let actual;
               let expression;
               let expected;
@@ -47,6 +62,7 @@ module.exports = function({types: t}) {
               let expressionEndPoint;
               let variables;
               let finalCommentsTranspiled = "";
+               
               // Helper function that splits the ASSERTION: actual, expected, and expression
               function assertions(string) {
                 let argumentSplit = string.split("|");
@@ -91,20 +107,57 @@ module.exports = function({types: t}) {
                 // console.log(resultOfAssertion);
                 return resultOfAssertion;
               }
+
+
+              
+              
+
               for (let index = 2; index < currcomments.length; index++) {
                   // if comments[index] is an assertion
-                  if (currcomments[index][0] !== 'v' && currcomments[index][1] !== ':' && currcomments[index] !== undefined && /\S/.test(currcomments[index])) {
+                  // if (currcomments[index][0] === 'o' 
+                  // && currcomments[index][1] === ':' 
+                  // && currcomments[index] !== undefined 
+                  // && /\S/.test(currcomments[index])){
+                  //     assertion = assertions(currcomments[index]);
+                      
+                  //     finalCommentsTranspiled = assertion; 
+                  //     break; 
+                  // }
+                 
+
+                  if (currcomments[index][0] !== 'v' 
+                  && currcomments[index][1] !== ':' 
+                  && currcomments[index] !== undefined 
+                  && /\S/.test(currcomments[index])
+                  // && currcomments[index][0] !== 'x' 
+                  // && currcomments[index][1] !== ':' 
+                  ) {
                       assertion = assertions(currcomments[index]);
+                      
                       finalCommentsTranspiled += assertion;
                   }
+
+                  
+                // CHANGES JP 
+                if (currcomments[index].indexOf("p:") !== -1 && currcomments[index][0] === 'p' && currcomments[index][1] === ':') {
+                    // let plan  = "\t" + currcomments[index].slice(2).replace(/^[ ]+|[ ]+$/g, '');
+                    let planInput = currcomments[index].slice(2).replace(/\s/g, ''); 
+                    endTest = '';
+                    finalCommentsTranspiled += `\tt.plan(${planInput});\n`
+                  }
+
+
                   // if currcomments[index] is a variable (optional)
+                  
                   if (currcomments[index].indexOf("v:") !== -1 && currcomments[index][0] === 'v' && currcomments[index][1] === ':') {
                     variables = "\t" + currcomments[index].slice(2).replace(/^[ ]+|[ ]+$/g, '');
                     finalCommentsTranspiled += variables;
                   }
                   // console.log("here we go again", finalCommentsTranspiled);
               }
-              comments[i].value = " dabtest('" + description + "', function (t) {" + "\n" + finalCommentsTranspiled + "\t" + "t.end();" + "\n" + "});" ;
+
+              //CHANGES JP
+              comments[i].value = " " + test +"('" + description + "', function (t) {" + "\n" + finalCommentsTranspiled + "\t" + endTest + "\n" + "});" ;
             }
           }
         }
