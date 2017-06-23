@@ -11,14 +11,18 @@ webpackCommentExtractionPlugin.prototype.apply = function(compiler) {
           setTimeout(function(){unComment}, 1000);
       } else if (file) {
         console.log('file is defined')
-        compilation.assets['../tests/tape-test-sample.js'] = {
-          source: function() {
-           return file.source().replace(/(\/\*\ dab)|(\*\/)/g,'');
-          },
-          size: function() {
-            return file.source().length;
-          }
-        };
+        // if (file.source().includes('dabTape')) {
+          compilation.assets['../tests/tape-test-sample.js'] = {
+            source: function() {
+              console.log(file.source());
+              // remove dabTape if we move away from multiple file/framework feature
+             return "const test = require('tape')" + "\n" + file.source().replace(/(\/\*\ dabTape)|(\/\*\ dab)|(\*\/)/g,'');
+            },
+            size: function() {
+              return file.source().length;
+            }
+          };
+        // }
       }
     }
     callback();
