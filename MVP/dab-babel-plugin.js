@@ -18,15 +18,26 @@ module.exports = function({types: t}) {
             // TODO FIX TAPE SYNTAX!!!!!!!!!
             if (comments[i].value.includes('%Tape')) {
               // if (tapeCount === 0) {
+<<<<<<< HEAD
                 // console.log("first", comments[i].value );
                 comments[i].value = reqFileName;
                 // comments[i].value = reqTape + "\n" + "/*" + reqFileName;
+=======
+              //   // console.log("first", comments[i].value );
+                comments[i].value = reqFileName;
+>>>>>>> 688d7244429bde279686055bb4c4479838887677
               //   tapeCount++;
               // } else {
               //   // console.log("2nd", comments[i].value);
               //   comments[i].value = reqFileName;
               //   tapeCount++;
               // }
+            }
+
+            if (comments[i].value.includes("%g")) {
+              let globalStart = comments[i].value.indexOf("%g");
+              console.log("golball", comments[i].value)
+              comments[i].value = " dab" + comments[i].value.slice(globalStart+2).replace(/^[ ]+|[ ]+$/g, '');
             }
 // ----------------------------------------------------------------------------
             // SECTION INCLUDES NAME/DESCRIPTION - ASSERTION AND VARIABLES
@@ -41,8 +52,13 @@ module.exports = function({types: t}) {
               if (description[0] === 'x' && description[1] === ':') {
                     description = description.slice(2).replace(/^[ ]+|[ ]+$/g, '');
                     test = ' dabtest.skip';
+<<<<<<< HEAD
               };
 
+=======
+              }; 
+              
+>>>>>>> 688d7244429bde279686055bb4c4479838887677
               if (description[0] === 'o' && description[1] === ':') {
                     description = description.slice(2).replace(/^[ ]+|[ ]+$/g, '');
                     test = ' dabtest.only';
@@ -96,6 +112,15 @@ module.exports = function({types: t}) {
                      expressionEndPoint = startIndExpression + twoArgExpression[two].length;
                      argumentLength = 2;
                    }
+<<<<<<< HEAD
+                }
+
+                // If assertion contains an error message
+                if (argumentLength === 3) {
+                    if (argumentSplit.length > 1) {
+                      // console.log("1st", argumentSplit);
+                      actual =  argumentSplit[0].slice(0, startIndExpression).replace(/^[ ]+|[ ]+$/g, '');
+=======
                 }
 
                 // If assertion contains an error message
@@ -108,6 +133,30 @@ module.exports = function({types: t}) {
                       let message = argumentSplit[1].replace(/\s*[\r\n]+\s*/g, "\n").split(/\n/)[0].replace(/^[ ]+|[ ]+$/g, '');
                       errMessage = "'" + message + "'";
                     }
+
+                    // If assertion does not contain an error message
+                    if (argumentSplit.length < 2) {
+                      //  console.log("2nd", argumentSplit[0]);
+                      actual =  argumentSplit[0].slice(0, startIndExpression).replace(/^[ ]+|[ ]+$/g, '');
+                      expression = argumentSplit[0].slice(startIndExpression, expressionEndPoint).replace(/^[ ]+|[ ]+$/g, '');
+                      expected = argumentSplit[0].slice(expressionEndPoint).replace(/\r\n/, "\n").split(/\n/)[0];
+                      errMessage = "'" + "Error: " + description + "'";
+                    }
+                    resultOfAssertion = "\t" + "t." + expression + "(" + actual + ", " + expected + ", " + errMessage + ");" + "\n";
+                    return resultOfAssertion;
+                }
+
+                if (argumentLength === 2) {
+                  // console.log("length is 2")
+                    if (argumentSplit.length > 1) {
+                      // console.log("1st", argumentSplit);
+>>>>>>> 688d7244429bde279686055bb4c4479838887677
+                      expression = argumentSplit[0].slice(startIndExpression, expressionEndPoint).replace(/^[ ]+|[ ]+$/g, '');
+                      expected = argumentSplit[0].slice(expressionEndPoint).replace(/\r\n/, "\n").split(/\n/)[0];
+                      let message = argumentSplit[1].replace(/\s*[\r\n]+\s*/g, "\n").split(/\n/)[0].replace(/^[ ]+|[ ]+$/g, '');
+                      errMessage = "'" + message + "'";
+                    }
+<<<<<<< HEAD
 
                     // If assertion does not contain an error message
                     if (argumentSplit.length < 2) {
@@ -162,6 +211,58 @@ module.exports = function({types: t}) {
                     finalCommentsTranspiled += `\tt.plan(${planInput});\n`
                   }
               }
+=======
+
+                    // If assertion does not contain an error message
+                    if (argumentSplit.length < 2) {
+                      //  console.log("2nd", argumentSplit[0]);
+                      expression = argumentSplit[0].slice(startIndExpression, expressionEndPoint).replace(/^[ ]+|[ ]+$/g, '');
+                      expected = argumentSplit[0].slice(expressionEndPoint).replace(/\r\n/, "\n").split(/\n/)[0];
+                      errMessage = "'" + "Error: " + description + "'";
+                    }
+                    resultOfAssertion = "\t" + "t." + expression + "(" + expected + ", " + errMessage + ");" + "\n";
+                    return resultOfAssertion;
+                }
+              }
+
+
+              for (let index = 2; index < currcomments.length; index++) {
+                  // if comments[index] is an assertion
+                  if (currcomments[index].indexOf("a:") !== -1 && currcomments[index][0] === 'a' && currcomments[index][1] === ':') {
+                    // console.log("this is assertion", currcomments[index].slice(2).replace(/^[ ]+|[ ]+$/g, ''));
+                      assertion = assertions(currcomments[index].slice(2).replace(/^[ ]+|[ ]+$/g, ''));
+                      finalCommentsTranspiled += assertion;
+                  }
+
+                  // if currcomments[index] is a variable (optional)
+                  if (currcomments[index].indexOf("xa:") === -1 && currcomments[index][0] !== 'a' && currcomments[index][1] !== ':' && currcomments[index] !== undefined && /\S/.test(currcomments[index])) {
+                    let variableSplit = currcomments[index].replace(/\r\n/, "\n").split(/\n/);
+                    console.log(variableSplit);
+                    for(let v = 0; v < variableSplit.length; v++){
+                      if (variableSplit[v] !== undefined && /\S/.test(variableSplit[v])) {
+                        variables = "\t" + variableSplit[v].replace(/^[ ]+|[ ]+$/g, '') + "\n";
+                        finalCommentsTranspiled += variables;
+                      }
+                      // console.log("variable final comment", finalCommentsTranspiled)
+                    }
+                  }
+
+                  // if currcomments[index] is skipped
+                  //  if (currcomments[index].indexOf("xa:") !== -1 && currcomments[index][0] === 'x' && currcomments[index][1] === 'a' && currcomments[index][2] === ':') {
+                  //   assertion = assertions(currcomments[index].slice(3).replace(/^[ ]+|[ ]+$/g, '')); 
+                  //   finalCommentsTranspiled += "\t" + "t.skip('SKIPPED:" + description + "');" + "\n" + assertion;
+                  // }
+
+                  //if curcomments[index] is ending in plan 
+                  if (currcomments[index].indexOf("p:") !== -1 && currcomments[index][0] === 'p' && currcomments[index][1] === ':') {
+                    // let plan  = "\t" + currcomments[index].slice(2).replace(/^[ ]+|[ ]+$/g, '');
+                    let planInput = currcomments[index].slice(2).replace(/\s/g, ''); 
+                    endTest = '';
+                    finalCommentsTranspiled += `\tt.plan(${planInput});\n`;
+                  }
+                  
+              }
+>>>>>>> 688d7244429bde279686055bb4c4479838887677
               comments[i].value = test + "('" + description + "', function (t) {" + "\n" + finalCommentsTranspiled +  endTest + "});" ;
             }
           }

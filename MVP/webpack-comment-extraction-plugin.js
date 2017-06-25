@@ -16,6 +16,10 @@ webpackCommentExtractionPlugin.prototype.apply = function(compiler) {
             source: function() {
               console.log(file.source());
               // remove dabTape if we move away from multiple file/framework feature
+<<<<<<< HEAD
+=======
+              // CHANGE DABTAPE/DAB SIGNALLERS
+>>>>>>> 688d7244429bde279686055bb4c4479838887677
              return "const test = require('tape')" + "\n" + file.source().replace(/(\/\*\ dabTape)|(\/\*\ dab)|(\*\/)/g,'');
             },
             size: function() {
