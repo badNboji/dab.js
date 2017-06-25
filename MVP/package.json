@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node ./tests/tape-test-sample.js | tnyan",
-    "webpack": "webpack -w",
+    "test": "node ./tests/tape-test-sample.js",
+    "webpack": "webpack",
     "babel": "./node_modules/.bin/babel src -d babel-transpiled"
   },
   "author": "",
