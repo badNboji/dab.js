@@ -1,6 +1,12 @@
 /* %Tape */
+<<<<<<< HEAD
+
+const stressTest = {};
+
+=======
 /*  %g var numbers= [1,3,4]; */
 const stressTest = {};
+>>>>>>> 688d7244429bde279686055bb4c4479838887677
 stressTest.reverseObject = function(object) {
   let result = {};
   for (key in object) {
@@ -8,6 +14,19 @@ stressTest.reverseObject = function(object) {
   }
   return result;
 }
+<<<<<<< HEAD
+
+/*
+~ should reverse multiple properties
+~
+~a:stressTest.reverseObject({a:1,b:2}) equal 2 | reverse object
+
+*/
+
+
+module.exports = stressTest; 
+
+=======
 /*
 ~ should reverse multiple properties
 ~a: stressTest.reverseObject({a:1,b:2}) deepEqual {'1':'a','2':'b'}
@@ -129,3 +148,4 @@ setTimeout(() => { ~a: count equal 1 | message ~ }, 51);
 */
 
 module.exports = stressTest
+>>>>>>> 688d7244429bde279686055bb4c4479838887677

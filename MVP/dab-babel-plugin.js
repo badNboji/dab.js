@@ -11,15 +11,14 @@ module.exports = function({types: t}) {
           for (let i = 0; i < comments.length; i += 1) {
             // console.log('comments', path.parent.comments[i].value)
             // require tape library setup
-            const reqTape = " dabconst test = require('tape'); " +
-            "\n" +
-            "const " + state.file.opts.sourceMapTarget.slice(0, state.file.opts.sourceMapTarget.length - 3) + " = require('" + state.file.opts.filename + "');"
+            // const reqTape = " dabTape */"
             // require file name setup
-            const reqFileName = " dabconst " + state.file.opts.sourceMapTarget.slice(0, state.file.opts.sourceMapTarget.length - 3) + " = require('" + state.file.opts.filename + "');";
+            const reqFileName = " ß∂dNß0j1const " + state.file.opts.sourceMapTarget.slice(0, state.file.opts.sourceMapTarget.length - 3) + " = require('" + state.file.opts.filename + "');";
             // if a comments requires Tape then replace with complete require statement
             // TODO FIX TAPE SYNTAX!!!!!!!!!
             if (comments[i].value.includes('%Tape')) {
               // if (tapeCount === 0) {
+
               //   // console.log("first", comments[i].value );
                 comments[i].value = reqFileName;
               //   tapeCount++;
@@ -33,7 +32,7 @@ module.exports = function({types: t}) {
             if (comments[i].value.includes("%g")) {
               let globalStart = comments[i].value.indexOf("%g");
               console.log("golball", comments[i].value)
-              comments[i].value = " dab" + comments[i].value.slice(globalStart+2).replace(/^[ ]+|[ ]+$/g, '');
+              comments[i].value = " ß∂dNß0j1" + comments[i].value.slice(globalStart+2).replace(/^[ ]+|[ ]+$/g, '');
             }
 // ----------------------------------------------------------------------------
             // SECTION INCLUDES NAME/DESCRIPTION - ASSERTION AND VARIABLES
@@ -42,17 +41,18 @@ module.exports = function({types: t}) {
               let currcomments = comments[i].value.split("~");
               // currcomments[0] is empty
               // currcomments[1] = name/description and is required
-              let test = ' dabtest';
+              let test = ' ß∂dNß0j1test';
               let description = currcomments[1].replace(/\r\n/, "\n").split(/\n/)[0].replace(/^[ ]+|[ ]+$/g, '');
                //CHANGES JP
               if (description[0] === 'x' && description[1] === ':') {
                     description = description.slice(2).replace(/^[ ]+|[ ]+$/g, '');
-                    test = ' dabtest.skip';
-              }; 
-              
+                    test = ' ß∂dNß0j1test.skip';
+
+              };
+
               if (description[0] === 'o' && description[1] === ':') {
                     description = description.slice(2).replace(/^[ ]+|[ ]+$/g, '');
-                    test = ' dabtest.only';
+                    test = ' ß∂dNß0j1test.only';
               };
 
               let actual;
@@ -110,28 +110,6 @@ module.exports = function({types: t}) {
                     if (argumentSplit.length > 1) {
                       // console.log("1st", argumentSplit);
                       actual =  argumentSplit[0].slice(0, startIndExpression).replace(/^[ ]+|[ ]+$/g, '');
-                      expression = argumentSplit[0].slice(startIndExpression, expressionEndPoint).replace(/^[ ]+|[ ]+$/g, '');
-                      expected = argumentSplit[0].slice(expressionEndPoint).replace(/\r\n/, "\n").split(/\n/)[0];
-                      let message = argumentSplit[1].replace(/\s*[\r\n]+\s*/g, "\n").split(/\n/)[0].replace(/^[ ]+|[ ]+$/g, '');
-                      errMessage = "'" + message + "'";
-                    }
-
-                    // If assertion does not contain an error message
-                    if (argumentSplit.length < 2) {
-                      //  console.log("2nd", argumentSplit[0]);
-                      actual =  argumentSplit[0].slice(0, startIndExpression).replace(/^[ ]+|[ ]+$/g, '');
-                      expression = argumentSplit[0].slice(startIndExpression, expressionEndPoint).replace(/^[ ]+|[ ]+$/g, '');
-                      expected = argumentSplit[0].slice(expressionEndPoint).replace(/\r\n/, "\n").split(/\n/)[0];
-                      errMessage = "'" + "Error: " + description + "'";
-                    }
-                    resultOfAssertion = "\t" + "t." + expression + "(" + actual + ", " + expected + ", " + errMessage + ");" + "\n";
-                    return resultOfAssertion;
-                }
-
-                if (argumentLength === 2) {
-                  // console.log("length is 2")
-                    if (argumentSplit.length > 1) {
-                      // console.log("1st", argumentSplit);
                       expression = argumentSplit[0].slice(startIndExpression, expressionEndPoint).replace(/^[ ]+|[ ]+$/g, '');
                       expected = argumentSplit[0].slice(expressionEndPoint).replace(/\r\n/, "\n").split(/\n/)[0];
                       let message = argumentSplit[1].replace(/\s*[\r\n]+\s*/g, "\n").split(/\n/)[0].replace(/^[ ]+|[ ]+$/g, '');

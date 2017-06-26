@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node ./tests/tape-test-sample.js | tnyan",
+    "test": "node ./tests/tape-test-sample.js",
     "webpack": "webpack",
     "babel": "./node_modules/.bin/babel src -d babel-transpiled"
   },
